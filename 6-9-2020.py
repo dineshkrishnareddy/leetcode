@@ -1,22 +1,22 @@
-#Definition for a binary tree node.
-class TreeNode:
-    def __init__(self, val=0, left=None, right=None):
-        self.val = val
-        self.left = left
-        self.right = right
+"""
+https://leetcode.com/problems/delete-node-in-a-bst/
+"""
 
 class Solution:
-    def __init__(self):
-        self.elements = []
+    def get_count(self, matrixA, matrixB):
+        rows = len(matrixA)
+        columns = len(matrixA[0])
+        count = 0
+        for x in range(rows):
+            for y in range(columns):
+                temp = 0
+                for i in range(y, rows):
+                    for j in range(x, columns):
+                        if matrixA[i][j] == 1 and matrixB[i - y][j - x] == 1:
+                            temp += 1
+                count = max(count, temp)
+        return count
 
-    def travelTree(self, root):
-        if root is None:
-            return
-        self.elements.append(root.val)
-        self.travelTree(root.left)
-        self.travelTree(root.right)
 
-    def getAllElements(self, root1: TreeNode, root2: TreeNode) -> List[int]:
-        self.travelTree(root1)
-        self.travelTree(root2)
-        return sorted(self.elements)
+def largestOverlap(self, A: List[List[int]], B: List[List[int]]) -> int:
+    return max(self.get_count(A, B), self.get_count(B, A))
