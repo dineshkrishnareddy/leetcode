@@ -1,34 +1,50 @@
 """
-Buddy Strings
-https://leetcode.com/problems/buddy-strings/
+Sort List
+https://leetcode.com/problems/sort-list/
 """
 
 
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
 class Solution:
-    def buddyStrings(self, A: str, B: str) -> bool:
-        len_a = len(A)
-        len_b = len(B)
+    def sortList(self, head: ListNode) -> ListNode:
+        if head is None or head.next is None:
+            return head
 
-        if len_a != len_b or len_a < 1:
-            return False
+        slow = fast = head
 
-        if A == B:
-            unique = set()
+        while fast is not None and fast.next is not None:
+            temp = slow
+            slow = slow.next
+            fast = fast.next.next
+        temp.next = None
+        left_side = self.sortList(head)
+        right_side = self.sortList(slow)
 
-            for char in A:
-                unique.add(char)
+        return self.mergeLists(left_side, right_side)
 
-            if len(unique) < len_a:
-                return True
-            return False
-        diff = []
-        for index in range(len_a):
-            if A[index] != B[index]:
-                diff.append(index)
+    def mergeLists(self, left_head, right_head):
+        curr_head = curr_tail = ListNode(0)
+        while left_head is not None and right_head is not None:
+            if left_head.val < right_head.val:
+                curr_tail.next = ListNode(left_head.val)
+                left_head = left_head.next
+            else:
+                curr_tail.next = ListNode(right_head.val)
+                right_head = right_head.next
+            curr_tail = curr_tail.next
 
-        if len(diff) == 2 and A[diff[0]] == B[diff[1]] and A[diff[1]] == B[diff[0]]:
-            return True
-        return False
+        while left_head is not None:
+            curr_tail.next = ListNode(left_head.val)
+            left_head = left_head.next
+            curr_tail = curr_tail.next
 
+        while right_head is not None:
+            curr_tail.next = ListNode(right_head.val)
+            right_head = right_head.next
+            curr_tail = curr_tail.next
 
-print(Solution().buddyStrings("aa", "aa"))
+        return curr_head.next
