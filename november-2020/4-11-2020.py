@@ -1,21 +1,30 @@
 """
-Consecutive Characters
-https://leetcode.com/problems/consecutive-characters/
+Minimum Height Trees
+https://leetcode.com/problems/minimum-height-trees/
 """
 
 
 class Solution:
-    def maxPower(self, s: str) -> int:
-        length = len(s)
+    def findMinHeightTrees(self, n: int, edges: List[List[int]]) -> List[int]:
+        if n == 1:
+            return [0]
 
-        if length == 0:
-            return 0
+        graph = defaultdict(list)
 
-        start, end = 0, 0
-        result = 0
-        while end < length:
-            while end < length and s[start] == s[end]:
-                end += 1
-            result = max(result, end - start)
-            start = end
-        return result
+        for v1, v2 in edges:
+            graph[v1].append(v2)
+            graph[v2].append(v1)
+
+        leaves = [i for i in graph.keys() if len(graph[i]) == 1]
+
+        while n > 2:
+            n -= len(leaves)
+            new_leaves = set()
+            for leaf in leaves:
+                neighbour = graph[leaf].pop()
+                graph[neighbour].remove(leaf)
+
+                if len(graph[neighbour]) == 1:
+                    new_leaves.add(neighbour)
+            leaves = new_leaves
+        return leaves
