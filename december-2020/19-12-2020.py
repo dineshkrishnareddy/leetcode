@@ -37,3 +37,7 @@ class Solution(object):
 #                 decode_str += s
 
 #         return decode_str[K-1]
+
+S = "leet2code3"
+K = 10
+Solution().decodeAtIndex(S, K)
