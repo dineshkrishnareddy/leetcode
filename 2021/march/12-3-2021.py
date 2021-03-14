@@ -1,6 +1,6 @@
 """
 Coin Change
-https://leetcode.com/problems/coin-change/solution/
+https://leetcode.com/problems/coin-change/
 """
 
 
