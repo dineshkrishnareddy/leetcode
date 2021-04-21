@@ -5,28 +5,31 @@ https://leetcode.com/problems/remove-all-adjacent-duplicates-in-string-ii/
 
 
 class Solution:
-    def removeDuplicates1(self, S: str, K: int) -> str:
-        count, i = 1, 1
-        while i < len(S):
-            if S[i] == S[i - 1]:
-                count += 1
-            else:
-                count = 1
-            if count == K: S = self.removeDuplicates(S[:i - K + 1] + S[i + 1:], K)
-            i += 1
-        return S
+    def numSubmatrixSumTarget(self, matrix, target: int) -> int:
+        if not matrix:
+            return 0
 
-    def removeDuplicates(self, S: str, K: int) -> str:
-        SC, st, i, j = list(S), [0], 1, 1
-        while j < len(S):
-            SC[i] = SC[j]
-            if i == 0 or SC[i] != SC[i - 1]:
-                st.append(i)
-            elif i - st[-1] + 1 == K:
-                i = st.pop() - 1
-            i += 1
-            j += 1
-        return "".join(SC[:i])
+        def get_sum(arr, k):
+            add = 0
+            mapping = {0: 1}
+            res = 0
+            for i in arr:
+                add += i
+                if add - k in mapping:
+                    res += mapping[add - k]
+                mapping[add] = mapping.get(add, 0) + 1
+            return res
 
+        m = len(matrix)
+        n = len(matrix[0])
+        result = 0
+        for i in range(m):
+            nums = [0] * n
+            for j in range(i, m):
+                for k in range(n):
+                    nums[k] += matrix[j][k]
+                result += get_sum(nums, target)
 
-print(Solution().removeDuplicates('deeedbbcccbdaa', 3))
+        return result
+
+print(Solution().numSubmatrixSumTarget([[1,-1],[-1,1]], 0))
