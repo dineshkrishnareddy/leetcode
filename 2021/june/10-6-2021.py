@@ -1,34 +1,42 @@
 """
-1696. Jump Game VI
-https://leetcode.com/problems/jump-game-vi
+729. My Calendar I
+https://leetcode.com/problems/my-calendar-i/
 """
-import heapq
 
-class Solution:
-    def maxResult1(self, nums: List[int], k: int) -> int:
-        n = len(nums)
-        dp = [0] * n
-        for i in range(n):
-            maxV = float('-inf')
-            for j in range(i - k, i):
-                if j >= 0:
-                    maxV = max(maxV, dp[j])
-            if maxV == float("-inf"):
-                maxV = 0
-            dp[i] = nums[i] + maxV
-        return dp[n - 1]
 
-    def maxResult(self, nums: List[int], k: int) -> int:
-        n = len(nums)
-        queue = []
-        val = 0
-        for i in range(n):
-            maxV = 0
-            if queue:
-                maxV, indx = queue[0]
-                while indx + k < i:
-                    maxV, indx = heapq.heappop(queue)
-                heapq.heappush(queue, [maxV, indx])
-            val = nums[i] + (-1) * maxV
-            heapq.heappush(queue, [-1 * val, i])
-        return val
+class Node:
+    __slots__ = 'start', 'end', 'left', 'right'
+
+    def __init__(self, start, end):
+        self.start = start
+        self.end = end
+        self.left = self.right = None
+
+    def insert(self, node):
+        if node.start >= self.end:
+            if not self.right:
+                self.right = node
+                return True
+            return self.right.insert(node)
+        elif node.end <= self.start:
+            if not self.left:
+                self.left = node
+                return True
+            return self.left.insert(node)
+        else:
+            return False
+
+
+class MyCalendar(object):
+    def __init__(self):
+        self.root = None
+
+    def book(self, start, end):
+        if self.root is None:
+            self.root = Node(start, end)
+            return True
+        return self.root.insert(Node(start, end))
+
+# Your MyCalendar object will be instantiated and called as such:
+# obj = MyCalendar()
+# param_1 = obj.book(start,end)
