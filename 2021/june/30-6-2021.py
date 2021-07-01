@@ -30,10 +30,6 @@ class Solution:
             return False, []
         _, p_path = get_path(root, p, [])
         _, q_path = get_path(root, q, [])
-        for idx in range(len(p_path)):
-            print(p_path[idx].val)
-        for idx in range(len(q_path)):
-            print(q_path[idx].val)
         result = None
         while p_path and q_path and p_path[0] == q_path[0]:
             result = p_path.pop(0)
