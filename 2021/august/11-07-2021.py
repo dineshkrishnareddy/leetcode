@@ -1,17 +1,17 @@
 """
-926. Flip String to Monotone Increasing
-https://leetcode.com/problems/flip-string-to-monotone-increasing/
+954. Array of Doubled Pairs
+https://leetcode.com/problems/array-of-doubled-pairs/
 """
+import collections
 
 
 class Solution(object):
-    def minFlipsMonoIncr(self, S):
-        P = [0]
-        for x in S:
-            P.append(P[-1] + int(x))
+    def canReorderDoubled(self, A):
+        count = collections.Counter(A)
+        for x in sorted(A, key = abs):
+            if count[x] == 0: continue
+            if count[2*x] == 0: return False
+            count[x] -= 1
+            count[2*x] -= 1
 
-        return min(P[j] + len(S)-j-(P[-1]-P[j])
-                   for j in range(len(P)))
-
-
-print(Solution().minFlipsMonoIncr('00110'))
+        return True
