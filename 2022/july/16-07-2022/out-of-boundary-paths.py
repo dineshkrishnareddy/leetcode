@@ -11,5 +11,4 @@ class Solution:
 
             return (moves(move,row+1,col)+moves(move,row,col+1)+moves(move,row-1,col)+moves(move,row,col-1))%((10**9)+7)
 
-
         return moves(maxMove,startRow,startColumn)
